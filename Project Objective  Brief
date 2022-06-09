@@ -1,5 +1,8 @@
 # Facial-Emotion-Recognition-Using-Deep-Learning
 
+The Dataset is extracted from Kaggle platform.
+
+Source Link : https://www.kaggle.com/datasets/msambare/fer2013
 
 The main aim of this project is to produce Automatic Facial Expression Recognition System using deep learning Techniques 
 like which can take human facial images having some expressions as input and detect to successfully classify
@@ -10,6 +13,7 @@ for prediction expressions of a human face.
 
 Many different Deep Learning Neural Network models like Deep Convolutional Neural Network (DCNN) , Artificial Neural Netwo4rk (ANN),
 Convolutional Neural Network (CNN) and Machine Learning Model like Support Vector Machine (SVM) are used to solve this mult-label classification problem.
+
 
 Haar cascade was the face detection concept used , many image processing steps like Image resizing, normalisation, cropping, data balancing was done to remove the issues 
 related to the dataset and dataset with 28k images extracted from kaggle platform was altered with respect to the models and compatibility of the laptop used for implemneting them
