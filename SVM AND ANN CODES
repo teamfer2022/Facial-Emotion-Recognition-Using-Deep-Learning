@@ -1,0 +1,135 @@
+# Facial-Emotion-Recognition-Using-Deep-Learning
+
+SVM AND ANN CODES
+
+
+import numpy as np
+import pandas as pd
+import matplotlib.pyplot as plt
+import os
+import tensorflow as tf
+
+train_path ="C:/Users/Shreya/Desktop/newdatasetfer"
+from tensorflow.keras.preprocessing.image import ImageDataGenerator 
+from tensorflow.keras.utils import to_categorical, plot_model
+from tensorflow.keras import models, layers, regularizers
+from tensorflow.keras import Sequential
+from tensorflow import keras
+from sklearn.model_selection import KFold
+
+emotion_labels = sorted(os.listdir(train_path))
+print(emotion_labels)
+batch_size = 64
+target_size = (48,48)
+
+train_datagen = ImageDataGenerator(rescale=1./255)
+
+
+train_generator = train_datagen.flow_from_directory(
+        train_path,
+        target_size=target_size,
+        batch_size=batch_size,
+        color_mode="grayscale",
+        class_mode='categorical',
+        shuffle=True)
+
+input_shape = (48,48,1) # img_rows, img_colums, color_channels
+num_classes = 7
+def plot_images(img_dir, top=10):
+    all_img_dirs = os.listdir(img_dir)
+    img_files = [os.path.join(img_dir, file) for file in all_img_dirs][:5]
+  
+    plt.figure(figsize=(12, 12))
+  
+    for idx, img_path in enumerate(img_files):
+        plt.subplot(5, 5, idx+1)
+        img = plt.imread(img_path)
+        plt.tight_layout()         
+        plt.imshow(img, cmap='gray')
+
+emotions = os.listdir('C:/Users/Shreya/Desktop/newdatasetfer')
+values = [len(os.listdir(f'C:/Users/Shreya/Desktop/newdatasetfer/{emotion}')) for emotion in emotions]
+fig = plt.figure(figsize = (10, 5))
+
+# creating the bar plot
+plt.bar(emotions, values, color ='grey',
+        width = 0.4)
+
+plt.xlabel("Emotions")
+plt.ylabel("No. of images")
+plt.title("Train dataset overview")
+plt.show()
+
+model = Sequential()
+model.add(layers.Conv2D(filters = 32, padding = "same",activation = "relu",kernel_size=3, strides = 2,input_shape=input_shape))
+model.add(layers.MaxPool2D(pool_size=(2,2),strides = 2))
+
+model.add(layers.Conv2D(filters = 32, padding = "same",activation = "relu",kernel_size=3))
+model.add(layers.MaxPool2D(pool_size=(2,2),strides = 2))
+
+model.add(layers.Flatten())
+model.add(layers.Dense(128,activation="relu"))
+
+#Output layer
+model.add(layers.Dense(1,kernel_regularizer=regularizers.l2(0.01),activation = "linear"))
+model.add(layers.Dense(number_of_classes,kernel_regularizer = regularizers.l2(0.01),activation= "softmax"))
+model.compile(optimizer="adam",loss="squared_hinge", metrics = ['accuracy'])
+STEP_SIZE_TRAIN = train_generator.n//train_generator.batch_size
+num_epochs = 300
+
+history = model.fit(x=train_generator, steps_per_epoch=STEP_SIZE_TRAIN, epochs=num_epochs, batch_size=batch_size)
+
+models.save_model(model, 'SVM.h5')
+keys=history.history.keys()
+print(keys)
+
+def show_train_history(hisData,train): 
+    plt.plot(hisData.history[train])
+    plt.title('Training History')
+    plt.ylabel(train)
+    plt.xlabel('Epoch')
+    plt.legend(['train'], loc='upper left')
+    plt.show()
+
+show_train_history(history, 'loss' )
+show_train_history(history, 'accuracy')
+model_ann = Sequential()
+model_ann.add(layers.Dense(16, input_shape=input_shape, activation='relu'))
+model_ann.add(layers.Dropout(0.4))
+model_ann.add(layers.Dense(32, activation='relu'))
+model_ann.add(layers.Dropout(0.6))
+model_ann.add(layers.Flatten())
+model_ann.add(layers.Dense(7, activation='softmax'))
+
+model_ann.summary()
+model_ann.compile(loss='binary_crossentropy', optimizer='adam', metrics=['accuracy'])
+history = model_ann.fit(x=train_generator, steps_per_epoch=STEP_SIZE_TRAIN, epochs=num_epochs, batch_size=batch_size)
+history
+keys=history.history.keys()
+print(keys)
+
+def show_train_history(hisData,train): 
+    plt.plot(hisData.history[train])
+    plt.title('Training History')
+    plt.ylabel(train)
+    plt.xlabel('Epoch')
+    plt.legend(['train'], loc='upper left')
+    plt.show()
+
+show_train_history(history, 'loss')
+show_train_history(history, 'accuracy')
+# Accuracy of the different models
+names = ['SVM', 'ANN']
+compare_acc = [svm_score[1], ann_score[1]]
+# compare_acc = [0.94, 0.23, 0.45]
+plt.figure(figsize=(20,6))
+
+
+plt.barh(names,compare_acc, color=[ '#FBE7C6', '#B4F8C8'])
+for index, value in enumerate(compare_acc):
+    plt.text(value, index, str(value))
+plt.title('Comparing Accuracy of the Models')
+plt.ylabel('Accuracy')
+plt.xlabel('Models')
+
+plt.show()
