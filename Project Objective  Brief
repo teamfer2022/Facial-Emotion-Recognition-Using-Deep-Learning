@@ -1,0 +1,18 @@
+# Facial-Emotion-Recognition-Using-Deep-Learning
+
+
+The main aim of this project is to produce Automatic Facial Expression Recognition System using deep learning Techniques 
+like which can take human facial images having some expressions as input and detect to successfully classify
+it to accurate expression among the seven different expression classes .We have used techniques like neural networks , 
+Machine learning ,transfer learning .we have ran pre-trained model like MobileNetV2 , Deep neural network model , 
+artificial neural network ,and a ML model Support Vector Machine. We managed to successfully create a live demonstration 
+for prediction expressions of a human face.
+
+Many different Deep Learning Neural Network models like Deep Convolutional Neural Network (DCNN) , Artificial Neural Netwo4rk (ANN),
+Convolutional Neural Network (CNN) and Machine Learning Model like Support Vector Machine (SVM) are used to solve this mult-label classification problem.
+
+Haar cascade was the face detection concept used , many image processing steps like Image resizing, normalisation, cropping, data balancing was done to remove the issues 
+related to the dataset and dataset with 28k images extracted from kaggle platform was altered with respect to the models and compatibility of the laptop used for implemneting them
+and models were build & to make the live demo work too.
+
+
